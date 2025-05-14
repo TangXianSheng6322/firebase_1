@@ -1,5 +1,12 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  addDoc,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyATrzh_8PCXTmaaXPnmUeXLl_t54LyHGBs",
@@ -32,3 +39,46 @@ getDocs(colRef)
   .catch((err) => {
     console.log(err.message);
   });
+
+//adding document
+const addBookForm = document.querySelector(".add");
+addBookForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  addDoc(colRef, {
+    title: addBookForm.title.value,
+    author: addBookForm.author.value,
+  }).then(() => {
+    addBookForm.reset();
+  });
+});
+
+//IDK I spent 30 min looking for what was wrong, and after i changed the code to the one from tutorial it started to work even though the code is IDENTICAL and now all of the sudden my code also starts to work like whaaaaaat, I need to stop looking for troubles and refresh the s out of the code, like.....
+//this is the code from github
+//
+//  const addBookForm = document.querySelector('.add')
+// addBookForm.addEventListener('submit', (e) => {
+//   e.preventDefault()
+
+//   addDoc(colRef, {
+//     title: addBookForm.title.value,
+//     author: addBookForm.author.value,
+//   })
+//   .then(() => {
+//     addBookForm.reset()
+//   })
+// })
+
+//like its the same, so idk why it didnt work for me for 30 min
+
+//deleting document
+const deleteBookForm = document.querySelector(".delete");
+deleteBookForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const docRef = doc(db, "books", deleteBookForm.id.value);
+
+  deleteDoc(docRef).then(() => {
+    deleteBookForm.reset();
+  });
+});
