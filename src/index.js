@@ -11,6 +11,7 @@ import {
   where,
   orderBy,
   serverTimestamp,
+  getDoc,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -35,7 +36,7 @@ const colRef = collection(db, "books");
 //collection query
 const q = query(
   colRef,
-  where("author", "==", "Harper Lee"),
+  // where("author", "==", "Harper Lee"),
   orderBy("createdAt")
   // orderBy("title", "desc")
 );
@@ -104,4 +105,15 @@ deleteBookForm.addEventListener("submit", (e) => {
   deleteDoc(docRef).then(() => {
     deleteBookForm.reset();
   });
+});
+
+//get a single document
+const docRef = doc(db, "books", "x0f7Mc5PfvdcQjsUxprn");
+
+getDoc(docRef).then((doc) => {
+  console.log(doc.data(), doc.id);
+});
+
+onSnapshot(docRef, (doc) => {
+  console.log(doc.data(), doc.id);
 });
