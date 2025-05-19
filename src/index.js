@@ -17,6 +17,7 @@ import {
 import {
   createUserWithEmailAndPassword,
   getAuth,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
@@ -169,13 +170,21 @@ loginForm.addEventListener("submit", (e) => {
     .catch((err) => {
       console.log(err.message);
     });
+  loginForm.reset();
 });
 
 const logoutButton = document.querySelector(".logout");
 logoutButton.addEventListener("click", () => {
-  signOut(auth).then(() => {
-    console.log("The user signed out").catch((err) => {
+  signOut(auth)
+    .then(() => {
+      console.log("The user signed out");
+    })
+    .catch((err) => {
       console.log(err.message);
     });
-  });
+});
+
+//subscribing to auth changes
+onAuthStateChanged(auth, (user) => {
+  console.log("User status changed:", user);
 });
